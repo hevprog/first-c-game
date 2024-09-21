@@ -8,5 +8,9 @@ allrun:
 
 go:
 	.\run
-debug:
-	gdb -r run.exe
+kill:
+	taskkill /F /IM run.exe
+
+Build:
+	make compile
+	g++ -o Pingpong main.o game_call.o -Iinclude -Llib -lraylib -lopengl32 -lgdi32 -lwinmm
