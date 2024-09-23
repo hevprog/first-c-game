@@ -15,7 +15,6 @@ struct navigation //is this allowed?
 
 
 
-
 //GLOBAL CLASS----------------------------------------------
 class kinematicBody{ //A very flexible class i love it
     public:
@@ -32,9 +31,6 @@ class kinematicBody{ //A very flexible class i love it
     this->y = y;
     }
 };
-
-
-
 
 
 
@@ -70,7 +66,7 @@ class ball: public kinematicBody{ /// Ping Pong must have a BALL
             
         }
     }
-    void start(){ // when i lose this function is called!,the name its very deceiving
+    void start(){ // when i lose this function is called!,the name, its very deceiving
         x = get.centerx; y=get.centery;
         direction.x = 1; direction.y = 1;
     }
@@ -88,10 +84,10 @@ class ball: public kinematicBody{ /// Ping Pong must have a BALL
     void set_dir(Vector2 direction){
         this->direction = direction;
     }
-    void assign_rect(Rectangle pad){ /// provide a rectangle object to properly work hit function, else? this ball is flat.
+    void assign_rect(Rectangle pad){ /// provide a rectangle object to properly call hit function, else? this ball is flat.
         hit(pad);
     }
-    int get_shape(){ // this is for any class requesting its size, hoy!
+    int get_shape(){ // this is for any class or functions requesting its size, hoy!
         return size;
     }
 };
@@ -104,7 +100,6 @@ class player_paddle: public kinematicBody // this is Your pad, it has up and dow
 {
     protected:
     int height;int width;
-    private:
     public:
     Rectangle shape = Rectangle();
     player_paddle(int height,int width){
@@ -159,7 +154,7 @@ class cpu_paddle: public player_paddle{
         }
     } 
     private:void giveRandom(float min,float max){ /// maybe i can make use of this to nerf CPU soon
-        rand = 10/GetRandomValue(min,max); /// minimum of 1 to maximum of 10 to return value between 0 and 1
+        rand = GetRandomValue(min,max)/10; /// minimum of 1 to maximum of 10 to return value between 0 and 1
 
     }
     public:void set_state(int set){ // set state, this is for future features
@@ -178,12 +173,9 @@ Color colors;
 
 //game states-----------------------------------------------------------
 // I need to know more about data structure like linked list to better implement this part 
-//DO NOT DEFINE THIS IN .h file!!
-void game_init(){ 
-    game_ball.update();playerpad.update();compad.update();
-    compad.controls(game_ball.y);
-    game_ball.assign_rect(compad.getshape());
-    game_ball.assign_rect(playerpad.getshape());
+//DO NOT DEFINE THESE IN .h file!!
+void background_clear(Color color){
+    ClearBackground(color);
 }
 
 //DESKTOP----------------------------------------------------------------
@@ -193,27 +185,30 @@ SetTargetFPS(60);
 game_ball.set_x(get.centerx); game_ball.set_y(get.centery);/// draw first
 playerpad.set_x(get.most_left);playerpad.set_y(get.centery-playerpad.getshape().height);
 compad.set_x(get.most_right-10);compad.set_y(get.centery-compad.getshape().height);
-while (game_loop())//update
-    {
-        ClearBackground(BLACK);
-        BeginDrawing();
-        game_init();
-         DrawLine(get.centerx,0,get.centerx,get.maximum_sizey,WHITE);        
-        EndDrawing();
-    }
-
-    CloseWindow();
 };
+/// all 
+void game_init(){ 
+    ClearBackground(BLACK);
+    game_ball.update();playerpad.update();compad.update();
+    compad.controls(game_ball.y);
+    game_ball.assign_rect(compad.getshape());
+    game_ball.assign_rect(playerpad.getshape());
+}
 
-void background_clear(Color color){
-    ClearBackground(color);
-}
-void drawText(char string [],int size,Color color){
-    DrawText(string,get.centerx-size,get.centery-size,size,color);
-}
 bool game_loop(){
     return !WindowShouldClose();
 }
-Color get_color(){
-    return colors;
+void game_close(){
+    CloseWindow();
+}
+void begindraw(bool begin){
+    if(begin){
+        BeginDrawing();}
+    else
+    {
+        EndDrawing();
+    }
+}
+void gameDesignTable(){
+    DrawLine(get.centerx,0,get.centerx,get.maximum_sizey,WHITE);   
 }
