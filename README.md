@@ -8,3 +8,6 @@ features includes:
 
 Local multiplayer: v2.0.0
 game media (such as music and art): 2.1.0
+
+## UPDATE:
+This project is abandon
